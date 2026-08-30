@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import MessageInput from './MessageInput';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const ChatWindow = ({ conversation, onBack }) => {
   const { user, token } = useAuth();

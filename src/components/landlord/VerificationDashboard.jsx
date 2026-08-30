@@ -3,7 +3,7 @@ import { User, CheckCircle, XCircle, Clock, Eye, Mail, Phone, FileText, Filter, 
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const VerificationDashboard = () => {
   const [applications, setApplications] = useState([]);
@@ -243,7 +243,9 @@ const VerificationDashboard = () => {
                 <div className="border-t pt-4">
                   <p className="text-sm text-gray-600 mb-2">ID Proof Document</p>
                   <a
-                    href={`http://localhost:5001${selectedApp.idProofDocument.url}`}
+                    href={selectedApp.idProofDocument.url.startsWith('http') 
+                      ? selectedApp.idProofDocument.url 
+                      : `${API_BASE_URL}${selectedApp.idProofDocument.url}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:underline flex items-center"

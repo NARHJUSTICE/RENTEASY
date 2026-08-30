@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import FavoriteButton from './FavoriteButton';
 import { useAuth } from '../../context/AuthContext';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const PropertyCard = ({ property, onViewDetails, onShowInterest, onApplyNow, showOwnerInfo = false, index = 0 }) => {
   const { user, token } = useAuth();
@@ -26,9 +26,9 @@ const PropertyCard = ({ property, onViewDetails, onShowInterest, onApplyNow, sho
     if (!photo) return '';
     if (photo.startsWith('http://') || photo.startsWith('https://')) return photo;
     if (photo.startsWith('/uploads/')) {
-      return `http://localhost:5001${photo}`;
+      return `${API_BASE_URL}${photo}`;
     }
-    return `http://localhost:5001/uploads/properties/${photo}`;
+    return `${API_BASE_URL}/uploads/properties/${photo}`;
   };
 
   const userId = user?._id || user?.id;

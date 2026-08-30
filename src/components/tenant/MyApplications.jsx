@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const MyApplications = () => {
   const { user, token } = useAuth();
@@ -177,12 +177,12 @@ const MyApplications = () => {
     if (!photo) return '';
     if (photo.startsWith('http://') || photo.startsWith('https://')) return photo;
     if (photo.startsWith('/uploads/')) {
-      return `http://localhost:5001${photo}`;
+      return `${API_BASE_URL}${photo}`;
     }
-    return `http://localhost:5001/uploads/properties/${photo}`;
+    return `${API_BASE_URL}/uploads/properties/${photo}`;
   };
 
-  // ✅ Check if property exists
+  // Check if property exists
   const isPropertyDeleted = (property) => {
     return !property || !property._id;
   };

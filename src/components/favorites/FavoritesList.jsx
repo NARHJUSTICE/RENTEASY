@@ -5,7 +5,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import PropertyModal from '../properties/PropertyModal'; // ✅ ADD THIS IMPORT
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const FavoritesList = () => {
   const { user, token } = useAuth();
@@ -64,14 +64,14 @@ const FavoritesList = () => {
     }).format(price);
   };
 
-  const getImageUrl = (photo) => {
-    if (!photo) return '';
-    if (photo.startsWith('http://') || photo.startsWith('https://')) return photo;
-    if (photo.startsWith('/uploads/')) {
-      return `http://localhost:5001${photo}`;
-    }
-    return `http://localhost:5001/uploads/properties/${photo}`;
-  };
+ const getImageUrl = (photo) => {
+  if (!photo) return '';
+  if (photo.startsWith('http://') || photo.startsWith('https://')) return photo;
+  if (photo.startsWith('/uploads/')) {
+    return `${API_BASE_URL}${photo}`;
+  }
+  return `${API_BASE_URL}/uploads/properties/${photo}`;
+};
 
   if (loading) {
     return (

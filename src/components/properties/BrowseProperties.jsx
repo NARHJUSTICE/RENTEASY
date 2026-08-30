@@ -7,7 +7,7 @@ import PropertyCard from './PropertyCard';
 import PropertyModal from './PropertyModal';
 import ApplicationForm from '../common/ApplicationForm';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const BrowseProperties = () => {
   const { user } = useAuth();

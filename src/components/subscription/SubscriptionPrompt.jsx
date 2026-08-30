@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_your_key_here');
 
 // API Base URL
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const PaymentForm = ({ pricing, onPaymentSuccess }) => {
   const stripe = useStripe();

@@ -3,7 +3,7 @@ import { Search, Home, User, DollarSign, Trash2, RefreshCw, Eye, MapPin } from '
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const PropertyManagement = () => {
   const [properties, setProperties] = useState([]);

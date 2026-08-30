@@ -3,7 +3,7 @@ import { Search, FileText, User, Home, CheckCircle, XCircle, Clock, RefreshCw, E
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const ApplicationManagement = () => {
   const [applications, setApplications] = useState([]);

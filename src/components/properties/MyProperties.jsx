@@ -5,7 +5,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const MyProperties = () => {
   const navigate = useNavigate();
@@ -126,8 +126,7 @@ const MyProperties = () => {
     if (photo.startsWith('http://') || photo.startsWith('https://')) return photo;
 
     const normalizedPhoto = photo.startsWith('/') ? photo : `/${photo}`;
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api')
-      .replace(/\/api$/, '');
+    const baseUrl = API_BASE_URL.replace(/\/api$/, '');
 
     if (normalizedPhoto.startsWith('/uploads/')) {
       return `${baseUrl}${normalizedPhoto}`;

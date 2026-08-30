@@ -8,7 +8,7 @@ import ApplyForm from '../tenant/ApplyForm';
 import ReviewList from './ReviewList';
 import ReviewForm from './ReviewForm';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const PropertyModal = ({ property, onClose }) => {
   const { user, token } = useAuth();
@@ -32,9 +32,9 @@ const PropertyModal = ({ property, onClose }) => {
     if (!photo) return '';
     if (photo.startsWith('http://') || photo.startsWith('https://')) return photo;
     if (photo.startsWith('/uploads/')) {
-      return `http://localhost:5001${photo}`;
+      return `${API_BASE_URL}${photo}`;
     }
-    return `http://localhost:5001/uploads/properties/${photo}`;
+    return `${API_BASE_URL}/uploads/properties/${photo}`;
   };
 
   const handleSendMessage = async () => {
@@ -296,7 +296,7 @@ const PropertyModal = ({ property, onClose }) => {
                 </div>
               )}
 
-              {/* ✅ ENHANCED: Diet & Gender Preferences with better styling */}
+              {/* Diet & Gender Preferences with better styling */}
               {(property.dietPreference || property.genderPreference || property.dietExceptions) && (
                 <div className="border-t pt-4 mt-4">
                   <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 flex items-center">
@@ -352,7 +352,7 @@ const PropertyModal = ({ property, onClose }) => {
                 </div>
               )}
 
-              {/* ✅ Reviews Section with refresh trigger */}
+              {/* Reviews Section with refresh trigger */}
               <div className="border-t pt-4">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">Reviews</h3>
                 <ReviewList 
@@ -473,7 +473,7 @@ const PropertyModal = ({ property, onClose }) => {
         />
       )}
 
-      {/* ✅ Review Form Modal with refresh trigger */}
+      {/* Review Form Modal with refresh trigger */}
       {showReviewForm && applicationForReview && (
         <ReviewForm
           application={applicationForReview}

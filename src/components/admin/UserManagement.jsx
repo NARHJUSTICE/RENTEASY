@@ -3,7 +3,7 @@ import { Search, User, Mail, Phone, CheckCircle, XCircle, Trash2, Edit, RefreshC
 import axios from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);

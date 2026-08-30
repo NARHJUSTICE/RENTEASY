@@ -5,9 +5,9 @@ import toast from 'react-hot-toast';
 import { MapPin, Bed, Bath, DollarSign, ArrowLeft, Heart, CheckCircle, X, Calendar, MessageSquare, Users } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import FavoriteButton from './FavoriteButton';
-import ApplicationForm from '../common/ApplicationForm'; // ✅ ADDED
+import ApplicationForm from '../common/ApplicationForm';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -18,7 +18,7 @@ const PropertyDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [applying, setApplying] = useState(false);
   const [hasApplied, setHasApplied] = useState(false);
-  const [showApplicationForm, setShowApplicationForm] = useState(false); // ✅ ADDED
+  const [showApplicationForm, setShowApplicationForm] = useState(false);
 
   useEffect(() => {
     fetchProperty();
@@ -75,9 +75,9 @@ const PropertyDetail = () => {
     if (!photo) return '';
     if (photo.startsWith('http://') || photo.startsWith('https://')) return photo;
     if (photo.startsWith('/uploads/')) {
-      return `http://localhost:5001${photo}`;
+      return `${API_BASE_URL}${photo}`;
     }
-    return `http://localhost:5001/uploads/properties/${photo}`;
+    return `${API_BASE_URL}/uploads/properties/${photo}`;
   };
 
   const checkIsOwner = () => {
@@ -259,7 +259,7 @@ const PropertyDetail = () => {
             </div>
           )}
 
-          {/* ✅ Apply Button - Shows application form */}
+          {/* Apply Button - Shows application form */}
           {isTenant && !isOwner && property.availability === 'available' && (
             <div className="mt-6 border-t pt-6">
               {!hasApplied ? (
@@ -316,7 +316,7 @@ const PropertyDetail = () => {
         </div>
       </div>
 
-      {/* ✅ Application Form - Unified */}
+      {/* Application Form */}
       {showApplicationForm && property && (
         <ApplicationForm
           property={property}

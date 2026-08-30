@@ -5,7 +5,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
 
 const EditProperty = () => {
   const { id } = useParams();
@@ -114,9 +114,9 @@ const EditProperty = () => {
     if (!photo) return '';
     if (photo.startsWith('http://') || photo.startsWith('https://')) return photo;
     if (photo.startsWith('/uploads/')) {
-      return `http://localhost:5001${photo}`;
+      return `${API_BASE_URL}${photo}`;
     }
-    return `http://localhost:5001/uploads/properties/${photo}`;
+    return `${API_BASE_URL}/uploads/properties/${photo}`;
   };
 
   const handleChange = (e) => {
@@ -147,7 +147,7 @@ const EditProperty = () => {
         url: file.url,
         name: file.originalName,
         isExisting: false,
-        preview: file.url.startsWith('http') ? file.url : `http://localhost:5001${file.url}`
+        preview: file.url.startsWith('http') ? file.url : `${API_BASE_URL}${file.url}`
       }));
 
       setNewFiles(prev => [...prev, ...newUploads]);
