@@ -3,6 +3,7 @@ const router = express.Router();
 const Property = require('../models/Property');
 const User = require('../models/User');
 const { authenticateToken, requireSubscription, requireRole } = require('../middleware/auth');
+const { validationResult } = require('express-validator');
 const { normalizeRoomCount } = require('../utils/roomCount');
 const fs = require('fs');
 const path = require('path');
@@ -198,7 +199,7 @@ router.post('/', [
   }
 });
 
-// ✅ UPDATE property with photo management
+// UPDATE property with photo management
 router.put('/:id', [
   authenticateToken,
   requireSubscription,
@@ -218,7 +219,7 @@ router.put('/:id', [
       return res.status(404).json({ message: 'Property not found or unauthorized' });
     }
 
-    // ✅ Handle photo deletion
+    // Handle photo deletion
     if (req.body.deletePhotos && Array.isArray(req.body.deletePhotos)) {
       const photosToDelete = req.body.deletePhotos;
       
@@ -253,7 +254,7 @@ router.put('/:id', [
       console.log(`✅ Removed ${photosToDelete.length} photos`);
     }
 
-    // ✅ Handle new photo additions
+    // Handle new photo additions
     if (req.body.newPhotos && Array.isArray(req.body.newPhotos)) {
       // Add new photos to the existing array
       const newPhotos = req.body.newPhotos;
@@ -261,7 +262,7 @@ router.put('/:id', [
       console.log(`✅ Added ${newPhotos.length} new photos`);
     }
 
-    // ✅ Update other fields
+    // Update other fields
     const fieldsToUpdate = [
       'title', 'description', 'propertyType', 'bedrooms', 'bathrooms',
       'rentPrice', 'houseNumber', 'availability', 'amenities',
