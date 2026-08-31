@@ -116,7 +116,10 @@ const EditProperty = () => {
     if (photo.startsWith('/uploads/')) {
       return `${API_BASE_URL}${photo}`;
     }
-    return `${API_BASE_URL}/uploads/properties/${photo}`;
+    if (photo.includes('property-')) {
+      return `${API_BASE_URL}/uploads/properties/${photo}`;
+    }
+    return '';
   };
 
   const handleChange = (e) => {
@@ -728,11 +731,14 @@ const EditProperty = () => {
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = '';
-                            e.target.parentElement.innerHTML = `
-                              <div class="w-full h-full flex items-center justify-center text-gray-400">
-                                <Image class="w-8 h-8" />
-                              </div>
-                            `;
+                            e.target.style.display = 'none';
+                            const parent = e.target.parentElement;
+                            if (parent) {
+                              const fallback = document.createElement('div');
+                              fallback.className = 'w-full h-full flex items-center justify-center text-gray-400';
+                              fallback.innerHTML = '🖼️ No Image';
+                              parent.appendChild(fallback);
+                            }
                           }}
                         />
                       </div>
@@ -765,6 +771,7 @@ const EditProperty = () => {
                           onError={(e) => {
                             e.target.onerror = null;
                             e.target.src = '';
+                            e.target.style.display = 'none';
                           }}
                         />
                       </div>
