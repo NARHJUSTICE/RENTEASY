@@ -52,9 +52,7 @@ router.post('/property-media', authenticateToken, upload.array('media', 10), asy
       try {
         // Upload to Cloudinary using unsigned preset
         const result = await cloudinary.uploader.upload(file.path, {
-          upload_preset: 'renteasy_unsigned',
-          folder: 'renteasy/properties',
-          resource_type: 'auto'
+          upload_preset: 'renteasy_unsigned'
         });
 
         uploadedFiles.push({
