@@ -3,16 +3,17 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { authenticateToken } = require('../middleware/auth');
+const cloudinary = require('../config/cloudinary');
 
 const router = express.Router();
 
-// Ensure upload directory exists
+// Ensure upload directory exists (for temporary local storage)
 const uploadDir = path.join(__dirname, '..', 'uploads', 'properties');
 if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Configure multer
+// Configure multer for temporary local storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
@@ -35,7 +36,7 @@ const upload = multer({
   }
 });
 
-// Upload property media
+// Upload property media to Cloudinary
 router.post('/property-media', authenticateToken, upload.array('media', 10), async (req, res) => {
   try {
     console.log('📊 Upload request received');
@@ -45,16 +46,46 @@ router.post('/property-media', authenticateToken, upload.array('media', 10), asy
       return res.status(400).json({ message: 'No files uploaded' });
     }
 
-    const files = req.files.map(file => ({
-      url: `/uploads/properties/${file.filename}`,
-      type: file.mimetype.startsWith('image/') ? 'image' : 'video',
-      originalName: file.originalname,
-      size: file.size
-    }));
+    const uploadedFiles = [];
+
+    for (const file of req.files) {
+      try {
+        // Upload to Cloudinary with folder structure
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: 'renteasy/properties',
+          resource_type: 'auto',
+          transformation: [
+            { quality: 'auto:good' },
+            { fetch_format: 'auto' }
+          ]
+        });
+
+        uploadedFiles.push({
+          url: result.secure_url,
+          publicId: result.public_id,
+          type: result.resource_type,
+          originalName: file.originalname,
+          size: file.size
+        });
+
+        // Clean up local file after upload
+        try {
+          fs.unlinkSync(file.path);
+        } catch (err) {
+          console.log('Could not delete local file:', err.message);
+        }
+      } catch (uploadError) {
+        console.error('Cloudinary upload error:', uploadError);
+      }
+    }
+
+    if (uploadedFiles.length === 0) {
+      return res.status(500).json({ message: 'Failed to upload files to Cloudinary' });
+    }
 
     res.json({
-      message: 'Files uploaded successfully',
-      files: files
+      message: 'Files uploaded successfully to Cloudinary',
+      files: uploadedFiles
     });
   } catch (error) {
     console.error('Upload error:', error);
