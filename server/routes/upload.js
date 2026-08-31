@@ -54,6 +54,8 @@ router.post('/property-media', authenticateToken, upload.array('media', 10), asy
         const result = await cloudinary.uploader.upload(file.path, {
           folder: 'renteasy/properties',
           resource_type: 'auto',
+          use_filename: true,
+          unique_filename: true,
           transformation: [
             { quality: 'auto:good' },
             { fetch_format: 'auto' }
