@@ -3,7 +3,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { authenticateToken } = require('../middleware/auth');
-const cloudinary = require('../config/cloudinary');
 
 const router = express.Router();
 
@@ -36,7 +35,7 @@ const upload = multer({
   }
 });
 
-// Upload property media to Cloudinary
+// Upload property media to Cloudinary using unsigned preset (direct API call)
 router.post('/property-media', authenticateToken, upload.array('media', 10), async (req, res) => {
   try {
     console.log('📊 Upload request received');
@@ -46,19 +45,40 @@ router.post('/property-media', authenticateToken, upload.array('media', 10), asy
       return res.status(400).json({ message: 'No files uploaded' });
     }
 
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME || 'dgvwi5g5l';
+    const uploadPreset = 'renteasy_unsigned';
     const uploadedFiles = [];
 
     for (const file of req.files) {
       try {
-        // Upload to Cloudinary using unsigned preset
-        const result = await cloudinary.uploader.upload(file.path, {
-          upload_preset: 'renteasy_unsigned'
-        });
+        // Create form data for direct API call
+        const formData = new FormData();
+        const fileBuffer = fs.readFileSync(file.path);
+        const fileBlob = new Blob([fileBuffer], { type: file.mimetype });
+        formData.append('file', fileBlob, file.originalname);
+        formData.append('upload_preset', uploadPreset);
+        formData.append('folder', 'renteasy/properties');
+        
+        // Make direct API call to Cloudinary
+        const response = await fetch(
+          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+          {
+            method: 'POST',
+            body: formData
+          }
+        );
+        
+        const result = await response.json();
+        
+        if (!response.ok) {
+          console.error('Cloudinary API error:', result);
+          throw new Error(result.error?.message || 'Upload failed');
+        }
 
         uploadedFiles.push({
           url: result.secure_url,
           publicId: result.public_id,
-          type: result.resource_type,
+          type: 'image',
           originalName: file.originalname,
           size: file.size
         });
