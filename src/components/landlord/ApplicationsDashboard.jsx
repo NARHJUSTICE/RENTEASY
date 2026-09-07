@@ -11,7 +11,7 @@ const ApplicationsDashboard = () => {
   const [selectedApp, setSelectedApp] = useState(null);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false); // ✅ ADDED: Track processing state
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     fetchApplications();
@@ -30,22 +30,29 @@ const ApplicationsDashboard = () => {
   };
 
   const handleReviewApplication = async (applicationId, status, notes = '') => {
-    // ✅ Prevent multiple clicks
     if (isProcessing) return;
     
     try {
       setIsProcessing(true);
+      
       await axios.patch(`${API_BASE_URL}/applications/${applicationId}/review`, {
         status: status,
         notes: notes
       });
       
       toast.success(`Application ${status} successfully`);
-      await fetchApplications(); // ✅ Wait for fetch to complete
+      
+      // Close modal first
       setSelectedApp(null);
+      
+      // Fetch fresh data after a small delay to ensure DB update
+      setTimeout(async () => {
+        await fetchApplications();
+        setIsProcessing(false);
+      }, 500);
+      
     } catch (error) {
       toast.error('Failed to review application');
-    } finally {
       setIsProcessing(false);
     }
   };

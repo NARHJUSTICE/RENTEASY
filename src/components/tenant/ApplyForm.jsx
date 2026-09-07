@@ -47,7 +47,7 @@ const ApplyForm = ({ property, onClose, onSuccess }) => {
     try {
       setLoading(true);
       
-      const response = await axios.post(
+      await axios.post(
         `${API_BASE_URL}/applications/${property._id}/apply`,
         {
           idProofDocument: {
@@ -66,12 +66,17 @@ const ApplyForm = ({ property, onClose, onSuccess }) => {
       );
       
       toast.success('Application submitted successfully!');
-      if (onSuccess) onSuccess();
-      onClose();
+      
+      // IMPORTANT: Close modal and call onSuccess AFTER API call succeeds
+      setTimeout(() => {
+        if (onSuccess) onSuccess();
+        onClose();
+        setLoading(false);
+      }, 300);
+      
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to submit application';
       toast.error(message);
-    } finally {
       setLoading(false);
     }
   };
