@@ -21,6 +21,7 @@ const AddProperty = () => {
     handleSubmit,
     reset,
     watch,
+    setValue,
     formState: { errors }
   } = useForm({
     defaultValues: {
@@ -61,7 +62,6 @@ const AddProperty = () => {
 
       const propertyData = {
         ...data,
-        // ✅ Room fields
         totalRooms,
         availableRooms: totalRooms,
         occupiedRooms: 0,
@@ -79,16 +79,18 @@ const AddProperty = () => {
           country: data.country
         },
         amenities: data.amenities ? data.amenities.split(',').map(a => a.trim()) : [],
-        // ✅ NEW: Diet & Gender Preferences
         dietPreference: data.dietPreference || 'both',
         dietExceptions: data.dietExceptions || '',
         genderPreference: data.genderPreference || 'both'
       };
 
-      const response = await axios.post(`${API_BASE_URL}/properties`, propertyData);
+      await axios.post(`${API_BASE_URL}/properties`, propertyData);
       toast.success('Property added successfully!');
       reset();
       setUploadedFiles([]);
+      // Reset preferences to default
+      setValue('dietPreference', 'both');
+      setValue('genderPreference', 'both');
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to add property';
       toast.error(message);
@@ -249,7 +251,7 @@ const AddProperty = () => {
             )}
           </div>
 
-          {/* ✅ ENHANCED: Diet & Gender Preferences with better colors */}
+          {/* ✅ ENHANCED: Diet & Gender Preferences with better colors and fixed selection */}
           <div className="border-t pt-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
               <Users className="w-5 h-5 mr-2 text-blue-600" />
@@ -265,13 +267,7 @@ const AddProperty = () => {
                 <div className="grid grid-cols-3 gap-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      const radio = document.querySelector('input[name="dietPreference"][value="veg"]');
-                      if (radio) {
-                        radio.checked = true;
-                        radio.dispatchEvent(new Event('change', { bubbles: true }));
-                      }
-                    }}
+                    onClick={() => setValue('dietPreference', 'veg')}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       dietPreference === 'veg' 
                         ? 'border-green-500 bg-green-50 shadow-md' 
@@ -283,13 +279,7 @@ const AddProperty = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => {
-                      const radio = document.querySelector('input[name="dietPreference"][value="non-veg"]');
-                      if (radio) {
-                        radio.checked = true;
-                        radio.dispatchEvent(new Event('change', { bubbles: true }));
-                      }
-                    }}
+                    onClick={() => setValue('dietPreference', 'non-veg')}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       dietPreference === 'non-veg' 
                         ? 'border-red-500 bg-red-50 shadow-md' 
@@ -301,13 +291,7 @@ const AddProperty = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => {
-                      const radio = document.querySelector('input[name="dietPreference"][value="both"]');
-                      if (radio) {
-                        radio.checked = true;
-                        radio.dispatchEvent(new Event('change', { bubbles: true }));
-                      }
-                    }}
+                    onClick={() => setValue('dietPreference', 'both')}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       dietPreference === 'both' 
                         ? 'border-purple-500 bg-purple-50 shadow-md' 
@@ -317,12 +301,6 @@ const AddProperty = () => {
                     <span className="text-2xl">🥘</span>
                     <span className="text-xs font-medium mt-1">Both Welcome</span>
                   </button>
-                </div>
-                {/* Hidden radio inputs for react-hook-form */}
-                <div className="hidden">
-                  <input type="radio" value="veg" {...register('dietPreference')} />
-                  <input type="radio" value="non-veg" {...register('dietPreference')} />
-                  <input type="radio" value="both" {...register('dietPreference')} />
                 </div>
                 {errors.dietPreference && (
                   <p className="mt-1 text-sm text-red-600">{errors.dietPreference.message}</p>
@@ -337,13 +315,7 @@ const AddProperty = () => {
                 <div className="grid grid-cols-3 gap-2">
                   <button
                     type="button"
-                    onClick={() => {
-                      const radio = document.querySelector('input[name="genderPreference"][value="male"]');
-                      if (radio) {
-                        radio.checked = true;
-                        radio.dispatchEvent(new Event('change', { bubbles: true }));
-                      }
-                    }}
+                    onClick={() => setValue('genderPreference', 'male')}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       genderPreference === 'male' 
                         ? 'border-blue-500 bg-blue-50 shadow-md' 
@@ -355,13 +327,7 @@ const AddProperty = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => {
-                      const radio = document.querySelector('input[name="genderPreference"][value="female"]');
-                      if (radio) {
-                        radio.checked = true;
-                        radio.dispatchEvent(new Event('change', { bubbles: true }));
-                      }
-                    }}
+                    onClick={() => setValue('genderPreference', 'female')}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       genderPreference === 'female' 
                         ? 'border-pink-500 bg-pink-50 shadow-md' 
@@ -373,13 +339,7 @@ const AddProperty = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={() => {
-                      const radio = document.querySelector('input[name="genderPreference"][value="both"]');
-                      if (radio) {
-                        radio.checked = true;
-                        radio.dispatchEvent(new Event('change', { bubbles: true }));
-                      }
-                    }}
+                    onClick={() => setValue('genderPreference', 'both')}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       genderPreference === 'both' 
                         ? 'border-indigo-500 bg-indigo-50 shadow-md' 
@@ -389,12 +349,6 @@ const AddProperty = () => {
                     <span className="text-2xl">👥</span>
                     <span className="text-xs font-medium mt-1">Both Welcome</span>
                   </button>
-                </div>
-                {/* Hidden radio inputs for react-hook-form */}
-                <div className="hidden">
-                  <input type="radio" value="male" {...register('genderPreference')} />
-                  <input type="radio" value="female" {...register('genderPreference')} />
-                  <input type="radio" value="both" {...register('genderPreference')} />
                 </div>
                 {errors.genderPreference && (
                   <p className="mt-1 text-sm text-red-600">{errors.genderPreference.message}</p>
@@ -718,6 +672,8 @@ const AddProperty = () => {
               onClick={() => {
                 reset();
                 setUploadedFiles([]);
+                setValue('dietPreference', 'both');
+                setValue('genderPreference', 'both');
               }}
               className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
             >
