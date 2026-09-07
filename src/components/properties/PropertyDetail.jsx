@@ -324,6 +324,8 @@ const PropertyDetail = () => {
           onSuccess={() => {
             setHasApplied(true);
             setShowApplicationForm(false);
+            // Re-fetch the application status to update the UI
+            checkIfApplied();
             toast.success('Application submitted successfully!');
           }}
         />

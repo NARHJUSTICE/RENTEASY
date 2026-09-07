@@ -11,6 +11,7 @@ const ApplicationsDashboard = () => {
   const [selectedApp, setSelectedApp] = useState(null);
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false); // ✅ ADDED: Track processing state
 
   useEffect(() => {
     fetchApplications();
@@ -18,6 +19,7 @@ const ApplicationsDashboard = () => {
 
   const fetchApplications = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${API_BASE_URL}/applications/landlord/applications`);
       setApplications(response.data);
     } catch (error) {
@@ -28,17 +30,23 @@ const ApplicationsDashboard = () => {
   };
 
   const handleReviewApplication = async (applicationId, status, notes = '') => {
+    // ✅ Prevent multiple clicks
+    if (isProcessing) return;
+    
     try {
+      setIsProcessing(true);
       await axios.patch(`${API_BASE_URL}/applications/${applicationId}/review`, {
         status: status,
         notes: notes
       });
       
       toast.success(`Application ${status} successfully`);
-      fetchApplications();
+      await fetchApplications(); // ✅ Wait for fetch to complete
       setSelectedApp(null);
     } catch (error) {
       toast.error('Failed to review application');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -84,9 +92,10 @@ const ApplicationsDashboard = () => {
         </div>
         <button
           onClick={fetchApplications}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          disabled={loading}
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
         >
-          Refresh
+          {loading ? 'Loading...' : 'Refresh'}
         </button>
       </div>
 
@@ -248,7 +257,6 @@ const ApplicationsDashboard = () => {
                   </div>
                 </div>
                 
-                {/* ✅ Show phone number if provided in application */}
                 {selectedApp.phone && (
                   <div className="mt-2 text-sm">
                     <span className="text-gray-600">Contact Phone:</span>
@@ -256,7 +264,6 @@ const ApplicationsDashboard = () => {
                   </div>
                 )}
 
-                {/* ✅ Show rental duration details */}
                 {selectedApp.rentalDuration && (
                   <div className="mt-2 text-sm">
                     <span className="text-gray-600">Preferred Duration:</span>
@@ -280,22 +287,49 @@ const ApplicationsDashboard = () => {
                 <div className="flex flex-wrap gap-2">
                   <button
                     onClick={() => handleReviewApplication(selectedApp._id, 'approved')}
-                    className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+                    disabled={isProcessing || selectedApp.status === 'approved' || selectedApp.status === 'rejected'}
+                    className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                      isProcessing || selectedApp.status === 'approved' || selectedApp.status === 'rejected'
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-green-600 text-white hover:bg-green-700'
+                    }`}
                   >
-                    <CheckCircle className="w-4 h-4 mr-1" /> Approve
+                    {isProcessing ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-1"></div>
+                    ) : (
+                      <CheckCircle className="w-4 h-4 mr-1" />
+                    )}
+                    {selectedApp.status === 'approved' ? 'Already Approved' : selectedApp.status === 'rejected' ? 'Already Rejected' : 'Approve'}
                   </button>
                   <button
                     onClick={() => {
+                      if (isProcessing) return;
                       const notes = prompt('Reason for rejection:');
                       if (notes !== null) {
                         handleReviewApplication(selectedApp._id, 'rejected', notes);
                       }
                     }}
-                    className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                    disabled={isProcessing || selectedApp.status === 'approved' || selectedApp.status === 'rejected'}
+                    className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                      isProcessing || selectedApp.status === 'approved' || selectedApp.status === 'rejected'
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-red-600 text-white hover:bg-red-700'
+                    }`}
                   >
-                    <XCircle className="w-4 h-4 mr-1" /> Reject
+                    {isProcessing ? (
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-1"></div>
+                    ) : (
+                      <XCircle className="w-4 h-4 mr-1" />
+                    )}
+                    {selectedApp.status === 'rejected' ? 'Already Rejected' : selectedApp.status === 'approved' ? 'Already Approved' : 'Reject'}
                   </button>
                 </div>
+                {selectedApp.status !== 'pending' && (
+                  <p className="text-sm text-gray-500 mt-2">
+                    This application has already been {selectedApp.status}.
+                    {selectedApp.reviewNotes && ` Notes: ${selectedApp.reviewNotes}`}
+                  </p>
+                )}
               </div>
             </div>
           </div>

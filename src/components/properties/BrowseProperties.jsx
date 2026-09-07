@@ -92,9 +92,15 @@ const BrowseProperties = () => {
       filtered = filtered.filter(p => p.rentPrice <= parseInt(debouncedFilters.maxPrice));
     }
     
-    // Bedrooms filter
+    // ✅ FIXED: Bedrooms filter - handle "4+" case
     if (debouncedFilters.bedrooms) {
-      filtered = filtered.filter(p => p.bedrooms === parseInt(debouncedFilters.bedrooms));
+      if (debouncedFilters.bedrooms === '4') {
+        // 4+ bedrooms: include properties with 4 or more bedrooms
+        filtered = filtered.filter(p => p.bedrooms >= 4);
+      } else {
+        // Exact match for other bedroom counts
+        filtered = filtered.filter(p => p.bedrooms === parseInt(debouncedFilters.bedrooms));
+      }
     }
     
     // ✅ City filter - case insensitive, partial match

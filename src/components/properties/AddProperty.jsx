@@ -137,10 +137,96 @@ const AddProperty = () => {
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">Select property type</option>
-                <option value="apartment">Apartment</option>
-                <option value="house">House</option>
-                <option value="room">Room</option>
-                <option value="studio">Studio</option>
+                
+                {/* Residential */}
+                <optgroup label="🏠 Residential">
+                  <option value="apartment">Apartment</option>
+                  <option value="house">House</option>
+                  <option value="room">Room</option>
+                  <option value="studio">Studio</option>
+                  <option value="flat">Flat</option>
+                  <option value="duplex">Duplex</option>
+                  <option value="triplex">Triplex</option>
+                  <option value="bungalow">Bungalow</option>
+                  <option value="villa">Villa</option>
+                  <option value="mansion">Mansion</option>
+                  <option value="townhouse">Townhouse</option>
+                  <option value="penthouse">Penthouse</option>
+                  <option value="cottage">Cottage</option>
+                  <option value="cabin">Cabin</option>
+                  <option value="farmhouse">Farmhouse</option>
+                  <option value="guest_house">Guest House</option>
+                  <option value="serviced_apartment">Serviced Apartment</option>
+                </optgroup>
+
+                {/* Student & Budget */}
+                <optgroup label="🎓 Student & Budget">
+                  <option value="hostel">Hostel</option>
+                  <option value="university_hostel">University Hostel</option>
+                  <option value="paying_guest">Paying Guest (PG)</option>
+                  <option value="student_accommodation">Student Accommodation</option>
+                  <option value="dormitory">Dormitory</option>
+                  <option value="boarding_house">Boarding House</option>
+                  <option value="shared_room">Shared Room</option>
+                </optgroup>
+
+                {/* Commercial */}
+                <optgroup label="🏢 Commercial">
+                  <option value="shop">Shop</option>
+                  <option value="retail_space">Retail Space</option>
+                  <option value="office_space">Office Space</option>
+                  <option value="warehouse">Warehouse</option>
+                  <option value="factory">Factory</option>
+                  <option value="storage_unit">Storage Unit</option>
+                  <option value="showroom">Showroom</option>
+                  <option value="boutique">Boutique</option>
+                  <option value="salon">Salon</option>
+                  <option value="restaurant_space">Restaurant Space</option>
+                  <option value="cafe">Café</option>
+                  <option value="bakery">Bakery</option>
+                  <option value="food_court_stall">Food Court Stall</option>
+                </optgroup>
+
+                {/* Hospitality & Events */}
+                <optgroup label="🏨 Hospitality & Events">
+                  <option value="hotel">Hotel</option>
+                  <option value="resort">Resort</option>
+                  <option value="lodge">Lodge</option>
+                  <option value="bed_and_breakfast">Bed & Breakfast</option>
+                  <option value="motel">Motel</option>
+                  <option value="inn">Inn</option>
+                  <option value="campground">Campground</option>
+                  <option value="eco_lodge">Eco Lodge</option>
+                  <option value="vacation_rental">Vacation Rental</option>
+                  <option value="event_space">Event Space</option>
+                  <option value="conference_center">Conference Center</option>
+                  <option value="banquet_hall">Banquet Hall</option>
+                  <option value="party_hall">Party Hall</option>
+                  <option value="wedding_venue">Wedding Venue</option>
+                  <option value="exhibition_space">Exhibition Space</option>
+                  <option value="studio_space">Studio Space</option>
+                </optgroup>
+
+                {/* Specialized */}
+                <optgroup label="🔧 Specialized">
+                  <option value="co_living_space">Co-Living Space</option>
+                  <option value="coworking_space">Coworking Space</option>
+                  <option value="workspace">Workspace</option>
+                  <option value="workshop">Workshop</option>
+                  <option value="garage">Garage</option>
+                  <option value="parking_space">Parking Space</option>
+                  <option value="gym_space">Gym Space</option>
+                  <option value="clinic_space">Clinic Space</option>
+                  <option value="daycare_space">Daycare Space</option>
+                  <option value="school_space">School Space</option>
+                  <option value="nursing_home">Nursing Home</option>
+                  <option value="industrial_unit">Industrial Unit</option>
+                  <option value="laboratory">Laboratory</option>
+                  <option value="distribution_center">Distribution Center</option>
+                  <option value="land">Land</option>
+                  <option value="agricultural_land">Agricultural Land</option>
+                </optgroup>
+
               </select>
               {errors.propertyType && (
                 <p className="mt-1 text-sm text-red-600">{errors.propertyType.message}</p>
@@ -180,9 +266,11 @@ const AddProperty = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      document.querySelector('input[name="dietPreference"][value="veg"]').checked = true;
-                      const event = new Event('change', { bubbles: true });
-                      document.querySelector('input[name="dietPreference"][value="veg"]').dispatchEvent(event);
+                      const radio = document.querySelector('input[name="dietPreference"][value="veg"]');
+                      if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change', { bubbles: true }));
+                      }
                     }}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       dietPreference === 'veg' 
@@ -196,9 +284,11 @@ const AddProperty = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      document.querySelector('input[name="dietPreference"][value="non-veg"]').checked = true;
-                      const event = new Event('change', { bubbles: true });
-                      document.querySelector('input[name="dietPreference"][value="non-veg"]').dispatchEvent(event);
+                      const radio = document.querySelector('input[name="dietPreference"][value="non-veg"]');
+                      if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change', { bubbles: true }));
+                      }
                     }}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       dietPreference === 'non-veg' 
@@ -212,9 +302,11 @@ const AddProperty = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      document.querySelector('input[name="dietPreference"][value="both"]').checked = true;
-                      const event = new Event('change', { bubbles: true });
-                      document.querySelector('input[name="dietPreference"][value="both"]').dispatchEvent(event);
+                      const radio = document.querySelector('input[name="dietPreference"][value="both"]');
+                      if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change', { bubbles: true }));
+                      }
                     }}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       dietPreference === 'both' 
@@ -232,6 +324,9 @@ const AddProperty = () => {
                   <input type="radio" value="non-veg" {...register('dietPreference')} />
                   <input type="radio" value="both" {...register('dietPreference')} />
                 </div>
+                {errors.dietPreference && (
+                  <p className="mt-1 text-sm text-red-600">{errors.dietPreference.message}</p>
+                )}
               </div>
 
               {/* Gender Preference */}
@@ -243,9 +338,11 @@ const AddProperty = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      document.querySelector('input[name="genderPreference"][value="male"]').checked = true;
-                      const event = new Event('change', { bubbles: true });
-                      document.querySelector('input[name="genderPreference"][value="male"]').dispatchEvent(event);
+                      const radio = document.querySelector('input[name="genderPreference"][value="male"]');
+                      if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change', { bubbles: true }));
+                      }
                     }}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       genderPreference === 'male' 
@@ -259,9 +356,11 @@ const AddProperty = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      document.querySelector('input[name="genderPreference"][value="female"]').checked = true;
-                      const event = new Event('change', { bubbles: true });
-                      document.querySelector('input[name="genderPreference"][value="female"]').dispatchEvent(event);
+                      const radio = document.querySelector('input[name="genderPreference"][value="female"]');
+                      if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change', { bubbles: true }));
+                      }
                     }}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       genderPreference === 'female' 
@@ -275,9 +374,11 @@ const AddProperty = () => {
                   <button
                     type="button"
                     onClick={() => {
-                      document.querySelector('input[name="genderPreference"][value="both"]').checked = true;
-                      const event = new Event('change', { bubbles: true });
-                      document.querySelector('input[name="genderPreference"][value="both"]').dispatchEvent(event);
+                      const radio = document.querySelector('input[name="genderPreference"][value="both"]');
+                      if (radio) {
+                        radio.checked = true;
+                        radio.dispatchEvent(new Event('change', { bubbles: true }));
+                      }
                     }}
                     className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all ${
                       genderPreference === 'both' 
@@ -295,6 +396,9 @@ const AddProperty = () => {
                   <input type="radio" value="female" {...register('genderPreference')} />
                   <input type="radio" value="both" {...register('genderPreference')} />
                 </div>
+                {errors.genderPreference && (
+                  <p className="mt-1 text-sm text-red-600">{errors.genderPreference.message}</p>
+                )}
               </div>
             </div>
 
