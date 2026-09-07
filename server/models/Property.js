@@ -53,7 +53,29 @@ const propertySchema = new mongoose.Schema({
   },
   propertyType: {
     type: String,
-    enum: ['apartment', 'house', 'room', 'studio'],
+    enum: [
+      // Residential
+      'apartment', 'house', 'room', 'studio', 'flat', 'duplex', 'triplex',
+      'bungalow', 'villa', 'mansion', 'townhouse', 'penthouse', 'cottage',
+      'cabin', 'farmhouse', 'guest_house', 'serviced_apartment',
+      // Student & Budget
+      'hostel', 'university_hostel', 'paying_guest', 'student_accommodation',
+      'dormitory', 'boarding_house', 'shared_room',
+      // Commercial
+      'shop', 'retail_space', 'office_space', 'warehouse', 'factory',
+      'storage_unit', 'showroom', 'boutique', 'salon', 'restaurant_space',
+      'cafe', 'bakery', 'food_court_stall',
+      // Hospitality & Events
+      'hotel', 'resort', 'lodge', 'bed_and_breakfast', 'motel', 'inn',
+      'campground', 'eco_lodge', 'vacation_rental', 'event_space',
+      'conference_center', 'banquet_hall', 'party_hall', 'wedding_venue',
+      'exhibition_space', 'studio_space',
+      // Specialized
+      'co_living_space', 'coworking_space', 'workspace', 'workshop',
+      'garage', 'parking_space', 'gym_space', 'clinic_space', 'daycare_space',
+      'school_space', 'nursing_home', 'industrial_unit', 'laboratory',
+      'distribution_center', 'land', 'agricultural_land'
+    ],
     required: true
   },
   bedrooms: {
@@ -87,6 +109,10 @@ const propertySchema = new mongoose.Schema({
     default: []
   },
   photos: {
+    type: [String],
+    default: []
+  },
+  videos: {
     type: [String],
     default: []
   },
