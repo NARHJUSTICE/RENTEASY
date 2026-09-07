@@ -42,14 +42,12 @@ const ApplicationsDashboard = () => {
       
       toast.success(`Application ${status} successfully`);
       
-      // Close modal first
-      setSelectedApp(null);
+      // ✅ IMPORTANT: Refresh data and clear processing BEFORE closing modal
+      await fetchApplications();
+      setIsProcessing(false);
       
-      // Fetch fresh data after a small delay to ensure DB update
-      setTimeout(async () => {
-        await fetchApplications();
-        setIsProcessing(false);
-      }, 500);
+      // ✅ Close modal LAST
+      setSelectedApp(null);
       
     } catch (error) {
       toast.error('Failed to review application');

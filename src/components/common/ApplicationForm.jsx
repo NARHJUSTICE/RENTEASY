@@ -78,13 +78,12 @@ const ApplicationForm = ({ property, onClose, onSuccess }) => {
 
       toast.success('Application submitted successfully!');
       
-      // IMPORTANT: Close modal and call onSuccess AFTER API call succeeds
-      // Use setTimeout to ensure state updates complete
-      setTimeout(() => {
-        if (onSuccess) onSuccess();
-        onClose();
-        setLoading(false);
-      }, 300);
+      // ✅ IMPORTANT: Clear loading state BEFORE closing/unmounting
+      setLoading(false);
+      
+      // ✅ Then notify parent and close
+      if (onSuccess) onSuccess();
+      onClose();
       
     } catch (error) {
       const message = error.response?.data?.message || 'Failed to submit application';
