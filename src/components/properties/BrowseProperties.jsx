@@ -182,10 +182,75 @@ const BrowseProperties = () => {
             className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">All Types</option>
-            <option value="apartment">Apartment</option>
-            <option value="house">House</option>
-            <option value="room">Room</option>
-            <option value="studio">Studio</option>
+            
+            {/* Residential */}
+            <option value="apartment">🏠 Apartment</option>
+            <option value="house">🏠 House</option>
+            <option value="room">🏠 Room</option>
+            <option value="studio">🏠 Studio</option>
+            <option value="flat">🏠 Flat</option>
+            <option value="duplex">🏠 Duplex</option>
+            <option value="villa">🏠 Villa</option>
+            <option value="bungalow">🏠 Bungalow</option>
+            <option value="townhouse">🏠 Townhouse</option>
+            <option value="penthouse">🏠 Penthouse</option>
+            <option value="cottage">🏠 Cottage</option>
+            <option value="cabin">🏠 Cabin</option>
+            <option value="farmhouse">🏠 Farmhouse</option>
+            <option value="guest_house">🏠 Guest House</option>
+            <option value="serviced_apartment">🏠 Serviced Apartment</option>
+
+            {/* Student & Budget */}
+            <option value="hostel">🎓 Hostel</option>
+            <option value="university_hostel">🎓 University Hostel</option>
+            <option value="paying_guest">🎓 Paying Guest (PG)</option>
+            <option value="student_accommodation">🎓 Student Accommodation</option>
+            <option value="dormitory">🎓 Dormitory</option>
+            <option value="boarding_house">🎓 Boarding House</option>
+            <option value="shared_room">🎓 Shared Room</option>
+
+            {/* Commercial */}
+            <option value="shop">🏢 Shop</option>
+            <option value="retail_space">🏢 Retail Space</option>
+            <option value="office_space">🏢 Office Space</option>
+            <option value="warehouse">🏢 Warehouse</option>
+            <option value="storage_unit">🏢 Storage Unit</option>
+            <option value="showroom">🏢 Showroom</option>
+            <option value="boutique">🏢 Boutique</option>
+            <option value="salon">🏢 Salon</option>
+            <option value="restaurant_space">🏢 Restaurant Space</option>
+            <option value="cafe">🏢 Café</option>
+            <option value="bakery">🏢 Bakery</option>
+
+            {/* Hospitality & Events */}
+            <option value="hotel">🏨 Hotel</option>
+            <option value="resort">🏨 Resort</option>
+            <option value="lodge">🏨 Lodge</option>
+            <option value="bed_and_breakfast">🏨 Bed & Breakfast</option>
+            <option value="motel">🏨 Motel</option>
+            <option value="inn">🏨 Inn</option>
+            <option value="vacation_rental">🏨 Vacation Rental</option>
+            <option value="event_space">🏨 Event Space</option>
+            <option value="conference_center">🏨 Conference Center</option>
+            <option value="banquet_hall">🏨 Banquet Hall</option>
+            <option value="wedding_venue">🏨 Wedding Venue</option>
+            <option value="exhibition_space">🏨 Exhibition Space</option>
+
+            {/* Specialized */}
+            <option value="co_living_space">🔧 Co-Living Space</option>
+            <option value="coworking_space">🔧 Coworking Space</option>
+            <option value="workspace">🔧 Workspace</option>
+            <option value="workshop">🔧 Workshop</option>
+            <option value="garage">🔧 Garage</option>
+            <option value="parking_space">🔧 Parking Space</option>
+            <option value="gym_space">🔧 Gym Space</option>
+            <option value="clinic_space">🔧 Clinic Space</option>
+            <option value="daycare_space">🔧 Daycare Space</option>
+            <option value="school_space">🔧 School Space</option>
+            <option value="nursing_home">🔧 Nursing Home</option>
+            <option value="laboratory">🔧 Laboratory</option>
+            <option value="land">🔧 Land</option>
+            <option value="agricultural_land">🔧 Agricultural Land</option>
           </select>
 
           <input
@@ -288,10 +353,75 @@ const BrowseProperties = () => {
                   className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">All Types</option>
-                  <option value="apartment">Apartment</option>
-                  <option value="house">House</option>
-                  <option value="room">Room</option>
-                  <option value="studio">Studio</option>
+                  
+                  {/* Residential */}
+                  <option value="apartment">🏠 Apartment</option>
+                  <option value="house">🏠 House</option>
+                  <option value="room">🏠 Room</option>
+                  <option value="studio">🏠 Studio</option>
+                  <option value="flat">🏠 Flat</option>
+                  <option value="duplex">🏠 Duplex</option>
+                  <option value="villa">🏠 Villa</option>
+                  <option value="bungalow">🏠 Bungalow</option>
+                  <option value="townhouse">🏠 Townhouse</option>
+                  <option value="penthouse">🏠 Penthouse</option>
+                  <option value="cottage">🏠 Cottage</option>
+                  <option value="cabin">🏠 Cabin</option>
+                  <option value="farmhouse">🏠 Farmhouse</option>
+                  <option value="guest_house">🏠 Guest House</option>
+                  <option value="serviced_apartment">🏠 Serviced Apartment</option>
+
+                  {/* Student & Budget */}
+                  <option value="hostel">🎓 Hostel</option>
+                  <option value="university_hostel">🎓 University Hostel</option>
+                  <option value="paying_guest">🎓 Paying Guest (PG)</option>
+                  <option value="student_accommodation">🎓 Student Accommodation</option>
+                  <option value="dormitory">🎓 Dormitory</option>
+                  <option value="boarding_house">🎓 Boarding House</option>
+                  <option value="shared_room">🎓 Shared Room</option>
+
+                  {/* Commercial */}
+                  <option value="shop">🏢 Shop</option>
+                  <option value="retail_space">🏢 Retail Space</option>
+                  <option value="office_space">🏢 Office Space</option>
+                  <option value="warehouse">🏢 Warehouse</option>
+                  <option value="storage_unit">🏢 Storage Unit</option>
+                  <option value="showroom">🏢 Showroom</option>
+                  <option value="boutique">🏢 Boutique</option>
+                  <option value="salon">🏢 Salon</option>
+                  <option value="restaurant_space">🏢 Restaurant Space</option>
+                  <option value="cafe">🏢 Café</option>
+                  <option value="bakery">🏢 Bakery</option>
+
+                  {/* Hospitality & Events */}
+                  <option value="hotel">🏨 Hotel</option>
+                  <option value="resort">🏨 Resort</option>
+                  <option value="lodge">🏨 Lodge</option>
+                  <option value="bed_and_breakfast">🏨 Bed & Breakfast</option>
+                  <option value="motel">🏨 Motel</option>
+                  <option value="inn">🏨 Inn</option>
+                  <option value="vacation_rental">🏨 Vacation Rental</option>
+                  <option value="event_space">🏨 Event Space</option>
+                  <option value="conference_center">🏨 Conference Center</option>
+                  <option value="banquet_hall">🏨 Banquet Hall</option>
+                  <option value="wedding_venue">🏨 Wedding Venue</option>
+                  <option value="exhibition_space">🏨 Exhibition Space</option>
+
+                  {/* Specialized */}
+                  <option value="co_living_space">🔧 Co-Living Space</option>
+                  <option value="coworking_space">🔧 Coworking Space</option>
+                  <option value="workspace">🔧 Workspace</option>
+                  <option value="workshop">🔧 Workshop</option>
+                  <option value="garage">🔧 Garage</option>
+                  <option value="parking_space">🔧 Parking Space</option>
+                  <option value="gym_space">🔧 Gym Space</option>
+                  <option value="clinic_space">🔧 Clinic Space</option>
+                  <option value="daycare_space">🔧 Daycare Space</option>
+                  <option value="school_space">🔧 School Space</option>
+                  <option value="nursing_home">🔧 Nursing Home</option>
+                  <option value="laboratory">🔧 Laboratory</option>
+                  <option value="land">🔧 Land</option>
+                  <option value="agricultural_land">🔧 Agricultural Land</option>
                 </select>
               </div>
 
@@ -450,7 +580,6 @@ const BrowseProperties = () => {
             setShowApplicationForm(false);
             setAppliedProperty(null);
             toast.success('Application submitted successfully!');
-            // ✅ Refresh properties to update UI
             fetchAllProperties();
           }}
         />
