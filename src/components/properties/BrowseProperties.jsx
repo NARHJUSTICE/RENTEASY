@@ -25,7 +25,6 @@ const BrowseProperties = () => {
     maxPrice: '',
     bedrooms: '',
     city: '',
-    // ✅ NEW: Diet & Gender Filters
     dietPreference: '',
     genderPreference: ''
   });
@@ -44,7 +43,6 @@ const BrowseProperties = () => {
     applyFilters();
   }, [debouncedFilters, allProperties]);
 
-  // ✅ Fetch ALL properties once on mount
   useEffect(() => {
     fetchAllProperties();
   }, []);
@@ -52,7 +50,6 @@ const BrowseProperties = () => {
   const fetchAllProperties = async () => {
     try {
       setLoading(true);
-      // ✅ Fetch ALL properties WITHOUT any status filtering
       const response = await axios.get(`${API_BASE_URL}/properties`);
       
       if (Array.isArray(response.data)) {
@@ -70,40 +67,29 @@ const BrowseProperties = () => {
     }
   };
 
-  // ✅ Apply filters to ALL properties (client-side)
   const applyFilters = () => {
     let filtered = [...allProperties];
     
-    // ✅ Show ALL properties regardless of status (available, maintenance, rented)
-    // No status filtering - show everything
-    
-    // Property Type filter
     if (debouncedFilters.propertyType) {
       filtered = filtered.filter(p => p.propertyType === debouncedFilters.propertyType);
     }
     
-    // Min Price filter
     if (debouncedFilters.minPrice) {
       filtered = filtered.filter(p => p.rentPrice >= parseInt(debouncedFilters.minPrice));
     }
     
-    // Max Price filter
     if (debouncedFilters.maxPrice) {
       filtered = filtered.filter(p => p.rentPrice <= parseInt(debouncedFilters.maxPrice));
     }
     
-    // ✅ FIXED: Bedrooms filter - handle "4+" case
     if (debouncedFilters.bedrooms) {
       if (debouncedFilters.bedrooms === '4') {
-        // 4+ bedrooms: include properties with 4 or more bedrooms
         filtered = filtered.filter(p => p.bedrooms >= 4);
       } else {
-        // Exact match for other bedroom counts
         filtered = filtered.filter(p => p.bedrooms === parseInt(debouncedFilters.bedrooms));
       }
     }
     
-    // ✅ City filter - case insensitive, partial match
     if (debouncedFilters.city && debouncedFilters.city.trim() !== '') {
       const citySearch = debouncedFilters.city.trim().toLowerCase();
       filtered = filtered.filter(property => {
@@ -112,12 +98,10 @@ const BrowseProperties = () => {
       });
     }
 
-    // ✅ NEW: Diet Preference filter
     if (debouncedFilters.dietPreference) {
       filtered = filtered.filter(p => p.dietPreference === debouncedFilters.dietPreference);
     }
 
-    // ✅ NEW: Gender Preference filter
     if (debouncedFilters.genderPreference) {
       filtered = filtered.filter(p => p.genderPreference === debouncedFilters.genderPreference);
     }
@@ -245,7 +229,6 @@ const BrowseProperties = () => {
             onKeyDown={(e) => e.stopPropagation()}
           />
 
-          {/* ✅ NEW: Diet Preference Filter */}
           <select
             value={filters.dietPreference}
             onChange={(e) => handleFilterChange('dietPreference', e.target.value)}
@@ -257,7 +240,6 @@ const BrowseProperties = () => {
             <option value="both">🥘 Both Welcome</option>
           </select>
 
-          {/* ✅ NEW: Gender Preference Filter */}
           <select
             value={filters.genderPreference}
             onChange={(e) => handleFilterChange('genderPreference', e.target.value)}
@@ -363,7 +345,6 @@ const BrowseProperties = () => {
                 />
               </div>
 
-              {/* ✅ NEW: Diet Preference Filter in Mobile */}
               <div>
                 <label className="block text-sm text-gray-700 mb-2">Diet Preference</label>
                 <select
@@ -378,7 +359,6 @@ const BrowseProperties = () => {
                 </select>
               </div>
 
-              {/* ✅ NEW: Gender Preference Filter in Mobile */}
               <div>
                 <label className="block text-sm text-gray-700 mb-2">Gender Preference</label>
                 <select
@@ -470,6 +450,8 @@ const BrowseProperties = () => {
             setShowApplicationForm(false);
             setAppliedProperty(null);
             toast.success('Application submitted successfully!');
+            // ✅ Refresh properties to update UI
+            fetchAllProperties();
           }}
         />
       )}
